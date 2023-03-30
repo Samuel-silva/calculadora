@@ -1,0 +1,16 @@
+.content {
+    align-items: center;
+    background: linear-gradient(to right, rgb(44, 62, 80), rgb(52, 152, 219));
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    padding: 40px;
+}
+.calculator {
+    border-radius: 5px;
+    background: white;
+    height: 320px;
+    overflow: hidden;
+    width: 235px;
+}
