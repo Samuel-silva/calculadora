@@ -1,6 +1,6 @@
 .content {
     align-items: center;
-    background: linear-gradient(to right, rgb(44, 62, 80), rgb(52, 152, 219));
+    background: linear-gradient(to bottom, rgb(44, 62, 80), rgb(52, 152, 219));
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -10,7 +10,10 @@
 .calculator {
     border-radius: 5px;
     background: white;
-    height: 320px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr repeat(5, 48px);
+    height: 330px;
     overflow: hidden;
     width: 235px;
 }

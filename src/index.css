@@ -1,5 +1,4 @@
 body {
-  font-family: 'Roboto Mono', monospace;
   margin: 0;
   min-width: 320px;
   -webkit-font-smoothing: antialiased;
@@ -7,4 +6,5 @@ body {
 }
 * {
   box-sizing: border-box;
+  font-family: 'Roboto Mono', monospace;
 }
