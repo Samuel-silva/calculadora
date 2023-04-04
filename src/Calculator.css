@@ -9,7 +9,6 @@
 }
 .calculator {
     border-radius: 5px;
-    background: white;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr repeat(5, 48px);
