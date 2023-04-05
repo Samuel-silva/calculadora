@@ -31,22 +31,50 @@ export default class Calculator extends Component {
     } else {
       const equals = operation === '=';
       const currentOperation = this.state.operation;
-
       const values = [...this.state.values];
-      try {
-        values[0] = eval(`${values[0]} ${currentOperation} ${values[1]}`);
-      } catch (error) {
+
+      if (currentOperation === '+') {
+        values[0] = parseFloat(values[0]) + parseFloat(values[1]);
+      } else if (currentOperation === '−') {
+        values[0] = parseFloat(values[0]) - parseFloat(values[1]);
+      } else if (currentOperation === '×') {
+        values[0] = parseFloat(values[0]) * parseFloat(values[1]);
+      } else if (currentOperation === '÷') {
+        values[0] = parseFloat(values[0]) / parseFloat(values[1]);
+      } else {
         values[0] = this.state.values[0]
       }
+
       values[1] = 0;
 
-      this.setState({
-        displayValue: values[0],
-        operation: equals ? null : operation,
-        indexArray: equals ? 0 : 1,
-        clearDisplay: !equals,
-        values
-      })
+      const numbersBeforeDot = values[0].toString().split(".")[0];
+      const numbersAfterDot = values[0].toString().split(".")[1];
+      let toFixed;
+      let error = '';
+
+      if (numbersBeforeDot.length <= 10) {
+        if (!numbersAfterDot) {
+          toFixed = 0;
+        } else if ((numbersBeforeDot.length + numbersAfterDot.length + 1) <= 10) {
+          toFixed = numbersAfterDot.length;
+        } else {
+          toFixed = 10 - (numbersBeforeDot.length + 1);
+        }
+      } else {
+        error = 'ERROR'
+      }
+
+      if (error === '') {
+        this.setState({
+          displayValue: values[0].toFixed(toFixed),
+          operation: equals ? null : operation,
+          indexArray: equals ? 0 : 1,
+          clearDisplay: !equals,
+          values
+        })
+      } else {
+        this.setState({...initialState, clearDisplay: true, displayValue: error })
+      }
     }
   }
 
@@ -54,11 +82,16 @@ export default class Calculator extends Component {
     if (n === '.' && this.state.displayValue.includes('.')) {
       return;
     }
+    if (this.state.displayValue.length > 9 && !this.state.clearDisplay) {
+      return
+    }
 
     const clearDisplay = this.state.displayValue === '0'
       || this.state.clearDisplay;
     const currentValue = clearDisplay ? '' : this.state.displayValue;
-    const displayValue = currentValue + n;
+    const numberFormater = this.state.displayValue === '0' && n === '.' ? '0.' : n;
+    const displayValue = currentValue + numberFormater;
+
     this.setState({displayValue, clearDisplay: false})
 
     if (n !== '.') {
@@ -77,15 +110,15 @@ export default class Calculator extends Component {
         <div className="calculator">
           <Display value={this.state.displayValue} />
           <Button label="AC" click={this.clearMemory} triple />
-          <Button label="÷" click={this.setOperation} value="/" operation />
+          <Button label="÷" click={this.setOperation} operation />
           <Button label="7" click={this.addDigit} />
           <Button label="8" click={this.addDigit} />
           <Button label="9" click={this.addDigit} />
-          <Button label="×" click={this.setOperation} value="*" operation />
+          <Button label="×" click={this.setOperation} operation />
           <Button label="4" click={this.addDigit} />
           <Button label="5" click={this.addDigit} />
           <Button label="6" click={this.addDigit} />
-          <Button label="−" click={this.setOperation} value="-" operation />
+          <Button label="−" click={this.setOperation} operation />
           <Button label="1" click={this.addDigit} />
           <Button label="2" click={this.addDigit} />
           <Button label="3" click={this.addDigit} />
