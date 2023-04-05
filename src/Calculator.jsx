@@ -26,7 +26,28 @@ export default class Calculator extends Component {
   }
 
   setOperation(operation) {
-    console.log(operation)
+    if (this.state.indexArray === 0) {
+      this.setState({ operation, indexArray: 1, clearDisplay: true })
+    } else {
+      const equals = operation === '=';
+      const currentOperation = this.state.operation;
+
+      const values = [...this.state.values];
+      try {
+        values[0] = eval(`${values[0]} ${currentOperation} ${values[1]}`);
+      } catch (error) {
+        values[0] = this.state.values[0]
+      }
+      values[1] = 0;
+
+      this.setState({
+        displayValue: values[0],
+        operation: equals ? null : operation,
+        indexArray: equals ? 0 : 1,
+        clearDisplay: !equals,
+        values
+      })
+    }
   }
 
   addDigit(n) {
@@ -64,7 +85,7 @@ export default class Calculator extends Component {
           <Button label="4" click={this.addDigit} />
           <Button label="5" click={this.addDigit} />
           <Button label="6" click={this.addDigit} />
-          <Button label="−" click={this.setOperation} operation />
+          <Button label="−" click={this.setOperation} value="-" operation />
           <Button label="1" click={this.addDigit} />
           <Button label="2" click={this.addDigit} />
           <Button label="3" click={this.addDigit} />
